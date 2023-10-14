@@ -38,5 +38,40 @@ class Contacts{
         }
     }
 
+    static fetchById = async (req, res) =>{
+        try {
+            const { contactId } = req.params;
+
+            const contact = await db.Contact.findOne({
+                where: {id: contactId },
+            });
+
+            if (!contact) {
+                res.status(400).send({
+                  message: `Contact with id '${contactId}' doesn't exist`,
+                });
+                return;
+            }
+
+            const {  
+                firstName, lastName, emailAddress, encryptionIv, mobileNumber,
+            } = contact;
+
+            const decryptedContact = {
+                mobileNumber: decrypt(mobileNumber, encryptionIv),
+                firstName: decrypt(firstName, encryptionIv),
+                lastName: decrypt(lastName, encryptionIv),
+                emailAddress: decrypt(emailAddress, encryptionIv),
+            }
+
+            res.status(200).send({
+                contact: decryptedContact,
+            });
+        
+        } catch (error) {
+            console.log("Error: ", error)
+        }
+    }
+
 }
 export default Contacts;
