@@ -23,4 +23,9 @@ routes.put(
     Contacts.update,
 );  
 
+routes.delete(
+    '/contact/delete/:contactId',
+    Contacts.delete,
+);
+
 export default routes;

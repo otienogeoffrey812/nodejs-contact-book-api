@@ -160,5 +160,34 @@ class Contacts{
         }
     }
 
+    static delete = async (req, res) =>{
+        try {
+            const { contactId } = req.params;
+
+            const contactExist = await db.Contact.findOne({
+                where: { id: contactId },
+            });
+
+            if (!contactExist) {
+                res.status(400).send({
+                    message: `Contact with id '${contactId}' doesn't exist`,
+                });
+                return;
+            }
+
+            await db.Contact.destroy({
+                where: { id: contactId },
+            })
+
+            res.status(200).send({
+                status: 'success',
+                message: 'Contact deleted successfully',
+            });
+            
+        } catch (error) {
+            handleError(error, 500, res);
+        }
+    }
+
 }
 export default Contacts;
