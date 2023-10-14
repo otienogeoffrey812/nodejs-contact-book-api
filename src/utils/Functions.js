@@ -27,3 +27,11 @@ export const encrypt = (text, encryptionIv) => {
       return "";
     }
   };
+
+  export const handleError = (error, statusCode, response) => {
+    console.log('This is the error: ', error);
+    response.status(statusCode).json({
+      message: error.message,
+      status: 'error',
+    });
+  };

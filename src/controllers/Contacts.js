@@ -1,6 +1,6 @@
 const crypto = require('crypto');
 import db from "../database/models";
-import {encrypt, decrypt} from "../utils/Functions";
+import {encrypt, decrypt, handleError} from "../utils/Functions";
 const createContactSchema = require('../validations/create-contact-schema');
 class Contacts{
     static create = async (req, res)=>{
@@ -34,7 +34,7 @@ class Contacts{
                 message: 'Contact created successfully',
             });            
         } catch (error) {
-            console.error("Error: ", error);            
+            handleError(error, 500, res);        
         }
     }
 
