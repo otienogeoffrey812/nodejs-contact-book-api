@@ -13,4 +13,9 @@ routes.get(
     Contacts.fetchById,
 );
 
+routes.get(
+    '/contacts/fetchAll',
+    Contacts.fetchAll,
+);
+
 export default routes;

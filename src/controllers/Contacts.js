@@ -32,7 +32,8 @@ class Contacts{
             res.status(201).send({
                 status: 'success',
                 message: 'Contact created successfully',
-            });            
+            });  
+
         } catch (error) {
             handleError(error, 500, res);        
         }
@@ -69,7 +70,41 @@ class Contacts{
             });
         
         } catch (error) {
-            console.log("Error: ", error)
+            handleError(error, 500, res);
+        }
+    }
+
+    static fetchAll = async (req, res) =>{
+        try {
+            const contactsArray = [];
+
+            const contacts = await db.Contact.findAll({
+                order: [['firstName', 'ASC']],
+              });
+
+            await Promise.all(
+                contacts.map((contact)=>{
+                    const {  
+                        firstName, lastName, emailAddress, encryptionIv, mobileNumber, id
+                    } = contact;
+        
+                    const decryptedContact = {
+                        mobileNumber: decrypt(mobileNumber, encryptionIv),
+                        firstName: decrypt(firstName, encryptionIv),
+                        lastName: decrypt(lastName, encryptionIv),
+                        emailAddress: decrypt(emailAddress, encryptionIv),
+                        id
+                    }
+                    contactsArray.push(decryptedContact);
+                })
+            )
+
+            res.status(200).send({
+                contacts: contactsArray,
+            });
+        
+        } catch (error) {
+            handleError(error, 500, res);
         }
     }
 
