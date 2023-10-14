@@ -18,4 +18,9 @@ routes.get(
     Contacts.fetchAll,
 );
 
+routes.put(
+    '/contact/update/:contactId',
+    Contacts.update,
+);  
+
 export default routes;

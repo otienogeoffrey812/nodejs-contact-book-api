@@ -108,5 +108,57 @@ class Contacts{
         }
     }
 
+    static update = async (req, res) =>{
+        try {
+            const { contactId } = req.params;
+
+            const { value, error } = createContactSchema.validateTask(req.body);
+
+            if (error) {
+                res.status(400).send({
+                status: 'error',
+                message: error.message,
+                });
+                return;
+            }
+
+            const { firstName, lastName, emailAddress, mobileNumber} = value;
+
+            const contactExist = await db.Contact.findOne({
+                where: { id: contactId },
+            });
+
+            if (!contactExist) {
+                res.status(400).send({
+                    message: `Contact with id '${contactId}' doesn't exist`,
+                });
+                return;
+            }
+
+            const encryptionIv = crypto.randomBytes(16);
+
+            const contactObj = {
+                mobileNumber: encrypt(mobileNumber, encryptionIv),
+                firstName: encrypt(firstName, encryptionIv),
+                lastName: encrypt(lastName, encryptionIv),
+                emailAddress: encrypt(emailAddress, encryptionIv),
+                encryptionIv: encryptionIv.toString('hex'),
+            }
+
+            await db.Contact.update(
+                { ...contactObj },
+                { where: { id: contactId } },
+            )
+
+            res.status(200).send({
+                status: 'success',
+                message: 'Contact updated successfully',
+            });
+            
+        } catch (error) {
+            handleError(error, 500, res);
+        }
+    }
+
 }
 export default Contacts;
