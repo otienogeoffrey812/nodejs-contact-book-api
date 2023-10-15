@@ -49,3 +49,7 @@ The API provides versatile and secure solution for managing contact details. It 
 * GET http://localhost:5002/api/v1/contacts/fetchAll
 * GET http://localhost:5002/api/v1/contact/fetch/:contactId
 * DELETE http://localhost:5002/api/v1/contact/delete/:contactId
+
+## Database Configuration
+
+* Database configguration examples are provided in env.example file
