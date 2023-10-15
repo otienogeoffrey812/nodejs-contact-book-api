@@ -27,15 +27,6 @@ module.exports = (sequelize, DataTypes) => {
           type: DataTypes.STRING,
           allowNull: false,
         },
-        isDeleted: {
-          type: DataTypes.BOOLEAN,
-          defaultValue: false,
-        },
-        clusteredId: {
-          type: DataTypes.INTEGER,
-          autoIncrement: true,
-          allowNull: false,
-        },
         createdAt: {
           type: DataTypes.DATE,
           allowNull: false,

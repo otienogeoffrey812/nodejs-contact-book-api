@@ -6,17 +6,19 @@ module.exports = {
     password: process.env.PASSWORD,
     database: process.env.DATABASE,
     host: process.env.SERVER,
-    dialect: process.env.DBTYPE,
-    dialectOptions: {
-        options: {
-          trustServerCertificate: true,
-          requestTimeout: 300000,
-          useUTC: false,
-        },
-      },
-      logging: (query) => {
-        // console.log(query);
-      },
+    dialect: process.env.DB_TYPE,
+    port: process.env.DB_PORT,
+    // dialectOptions: {
+    //     options: {
+    //       trustServerCertificate: true,
+    //       requestTimeout: 300000,
+    //       useUTC: false,
+    //     },
+    //   },
+      // logging: (query) => {
+      //   // console.log(query);
+      // },
+      logging: false,
       timezone: '+03:00',
       pool: {
         max: 30,
